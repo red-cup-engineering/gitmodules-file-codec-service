@@ -30,6 +30,8 @@
  *   path: string,
  *   url: string,
  *   branch?: string,
+ *   custodyRole?: string,
+ *   custodyReason?: string,
  * }>} GitmoduleEntry
  */
 
@@ -59,6 +61,8 @@ export function parseGitmodules(text) {
         path: current.path,
         url: current.url,
         ...(current.branch === undefined ? {} : { branch: current.branch }),
+        ...(current.custodyRole === undefined ? {} : { custodyRole: current.custodyRole }),
+        ...(current.custodyReason === undefined ? {} : { custodyReason: current.custodyReason }),
       }));
     }
   };
@@ -74,6 +78,8 @@ export function parseGitmodules(text) {
     if (field[1] === "path") current.path = normalizePath(field[2]);
     else if (field[1] === "url") current.url = field[2];
     else if (field[1] === "branch") current.branch = field[2];
+    else if (field[1] === "git-custody-role") current.custodyRole = field[2];
+    else if (field[1] === "git-custody-reason") current.custodyReason = field[2];
   }
   flush();
   return Object.freeze(entries.sort((left, right) => left.path.localeCompare(right.path)));
@@ -95,6 +101,8 @@ export function encodeGitmodules(entries) {
       `\tpath = ${entry.path}`,
       `\turl = ${entry.url}`,
       ...(entry.branch === undefined ? [] : [`\tbranch = ${entry.branch}`]),
+      ...(entry.custodyRole === undefined ? [] : [`\tgit-custody-role = ${entry.custodyRole}`]),
+      ...(entry.custodyReason === undefined ? [] : [`\tgit-custody-reason = ${entry.custodyReason}`]),
     ].join("\n"))
     .join("\n") + (entries.length === 0 ? "" : "\n");
 }

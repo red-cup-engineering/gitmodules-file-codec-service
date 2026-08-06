@@ -37,6 +37,14 @@ test("parseGitmodules keeps an optional branch field, and encode round-trips it"
   assert.equal(encodeGitmodules(entries), withBranch);
 });
 
+test("parseGitmodules preserves explicit Git custody catalog roles", () => {
+  const text = '[submodule "archive"]\n\tpath = lib/archive\n\turl = https://example.invalid/archive.git\n\tgit-custody-role = archived-workspace-dependency\n\tgit-custody-reason = Reproduces the dated workspace dependency graph.\n';
+  const entries = parseGitmodules(text);
+  assert.equal(entries[0].custodyRole, "archived-workspace-dependency");
+  assert.equal(entries[0].custodyReason, "Reproduces the dated workspace dependency graph.");
+  assert.equal(encodeGitmodules(entries), text);
+});
+
 test("parseGitmodules normalizes backslashes and a leading ./ in path", () => {
   const text = '[submodule "weird"]\n\tpath = .\\vendor\\weird\n\turl = https://example.test/weird.git\n';
   const entries = parseGitmodules(text);
