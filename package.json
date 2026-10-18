@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "description": "Parses a .gitmodules file into submodule entries and encodes entries back to .gitmodules text, and reads the two on-disk shapes that report submodule pin state (submodule status lines and raw gitlink lines). Use when code needs to read or rewrite .gitmodules, or interpret submodule status/gitlink output, without shelling out to git for the parsing itself.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/git-services-section.git",
+    "directory": "services/gitmodules-file-codec-service"
+  },
   "bin": {
     "read-gitmodules": "./scripts/read-gitmodules.mjs"
   },
